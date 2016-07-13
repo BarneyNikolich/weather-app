@@ -3,7 +3,7 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.redirect
+GET     /                           controllers.WSExample.index
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
@@ -13,4 +13,5 @@ GET     /message                    controllers.AsyncController.message
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 
-GET     /echo                       controllers.HomeController.echo(name = "barn")
+GET     /call                       controllers.WSExample.index
+GET     /callResponse               controllers.WSExample.showGetResult
