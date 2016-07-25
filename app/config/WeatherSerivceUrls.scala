@@ -9,6 +9,6 @@ object WeatherSerivceUrls {
   //API calls
   lazy val checkIfExistsUrl = s"$metOfficeHost/val/wxfcs/all/json/capabilities?res=daily&key=" + API_KEY
   lazy val listOfLocationsUrl = s"$metOfficeHost/val/wxfcs/all/json/sitelist?res=daily&key=" + API_KEY
-  lazy val threeHourlyReportUrl = s"$metOfficeHost/val/wxfcs/all/json/3840?res=3hourly&key=" + API_KEY
+  def threeHourlyReportUrl(id: String) = s"$metOfficeHost/val/wxfcs/all/json/$id?res=3hourly&key=" + API_KEY
 
 }
