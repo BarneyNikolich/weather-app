@@ -4,13 +4,16 @@ import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 
 import connectors.MetOfficeConnector
-import models.Root
+import models.{FiveDayReportRoot, Root}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 sealed trait MetOfficeResponse
-case class MetOfficeSuccessResponse(locations: Root) extends MetOfficeResponse
+case class AllLocationsSuccessResponse(locations: Root) extends MetOfficeResponse
+case class FiveDayForecastSuccessResponse(locations: FiveDayReportRoot) extends MetOfficeResponse
+
+
 case class ExampleNotFound(code: Int) extends MetOfficeResponse
 case class ExampleTimeOut(error: TimeoutException) extends MetOfficeResponse
 
@@ -22,7 +25,7 @@ class MetOfficeService @Inject() (metOfficeConnector: MetOfficeConnector) {
       response =>
 
         response.status match {
-          case 200 => MetOfficeSuccessResponse(response.json.as[Root])
+          case 200 => AllLocationsSuccessResponse(response.json.as[Root])
           case 404 => ExampleNotFound(response.status)
         }
 
@@ -32,17 +35,16 @@ class MetOfficeService @Inject() (metOfficeConnector: MetOfficeConnector) {
   }
 
   /**
-    * AMMEND THE JSON TO READ A 5 DAY FORECAST! ADD A MODEL
-    * @param id
-    * @return
+    * Set to call with Wallasey ID
     */
 
   def getFiveDayForecast(id: String): Future[MetOfficeResponse] = {
-    metOfficeConnector.getAllLocations map {
+
+    metOfficeConnector.getFiveDayForecast(id) map {
       fiveDayForecast =>
 
         fiveDayForecast.status match {
-          case 200 => MetOfficeSuccessResponse(fiveDayForecast.json.as[Root])
+          case 200 => FiveDayForecastSuccessResponse(fiveDayForecast.json.as[FiveDayReportRoot])
           case 404 => ExampleNotFound(fiveDayForecast.status)
         }
 

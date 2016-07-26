@@ -31,10 +31,10 @@ case class Location(Location: Seq[Town]) {
 }
 
 object Location {
-  implicit val formats = Json.format[Location]
+  implicit val formats = Json.format[LocationFiveDay]
 }
 
-case class Root(Locations: Location)
+case class Root(Locations: LocationFiveDay)
 
 object Root {
   implicit val formats = Json.format[Root]

@@ -16,15 +16,15 @@ class WSExample @Inject() (metOfficeService: MetOfficeService) extends Controlle
       metOfficeService.getLocations map {
         response =>
           response match {
-            case MetOfficeSuccessResponse(locationsList) =>
-              val h = locationsList.Locations.townExists("Hyde")
-              val location = locationsList.Locations.Location.filter(x => x.name == "Hyde")
-              val id = location.toString()
+            case AllLocationsSuccessResponse(locationsList) =>
+//              val h = locationsList.Locations.townExists("Hyde")
+//              val location = locationsList.Locations.Location.filter(x => x.name == "Hyde")
+//              val id = location.toString()
 
 
-              if(h) {
-                Ok("Hydes ID = " + id )
-              } else BadRequest
+//              if (h) {
+                Ok("Hydes ID = ")
+//              } else BadRequest
 
             case ExampleTimeOut(t) => InternalServerError
             case _ => Ok("TIMEOUT")
@@ -34,17 +34,18 @@ class WSExample @Inject() (metOfficeService: MetOfficeService) extends Controlle
   }
 
 
-  /**
-    * ADD FIVE DAY FORECAST CALL TO CONTROLLER
-    */
-  //  def getThreeHourly = Action.async {
-//    {
-//      metOfficeService
-//
-//
-//    }
-//  }
+  def getFiveDayForecast = Action.async {
+    {
+      metOfficeService.getFiveDayForecast(354059.toString) map {
+        fiveDayForecast =>
+          fiveDayForecast match {
+            case FiveDayForecastSuccessResponse(forecast) => Ok("Works")
+          }
+      }
 
+    }
+
+  }
 
 
 
