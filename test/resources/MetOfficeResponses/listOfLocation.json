@@ -1,0 +1,192 @@
+{
+  "Locations": {
+    "Location": [
+      {
+        "elevation": "7.0",
+        "id": "3066",
+        "latitude": "57.6494",
+        "longitude": "-3.5606",
+        "name": "Kinloss",
+        "region": "gr",
+        "unitaryAuthArea": "Moray"
+      },
+      {
+        "elevation": "6.0",
+        "id": "3068",
+        "latitude": "57.712",
+        "longitude": "-3.322",
+        "obsSource": "LNDSYN",
+        "name": "Lossiemouth",
+        "region": "gr",
+        "unitaryAuthArea": "Moray"
+      },
+      {
+        "elevation": "36.0",
+        "id": "3075",
+        "latitude": "58.454",
+        "longitude": "-3.089",
+        "obsSource": "LNDSYN",
+        "name": "Wick John O Groats Airport",
+        "region": "he",
+        "unitaryAuthArea": "Highland"
+      },
+      {
+        "elevation": "339.0",
+        "id": "3081",
+        "latitude": "57.006",
+        "longitude": "-3.397",
+        "name": "Braemar",
+        "nationalPark": "Cairngorms National Park",
+        "region": "gr",
+        "unitaryAuthArea": "Aberdeenshire"
+      },
+      {
+        "elevation": "245.0",
+        "id": "3155",
+        "latitude": "55.627",
+        "longitude": "-3.735",
+        "name": "Drumalbin",
+        "region": "st",
+        "unitaryAuthArea": "South Lanarkshire"
+      },
+      {
+        "elevation": "57.0",
+        "id": "3166",
+        "latitude": "55.928",
+        "longitude": "-3.343",
+        "name": "Edinburgh/Gogarbank",
+        "region": "dg",
+        "unitaryAuthArea": "Edinburgh"
+      },
+      {
+        "elevation": "146.0",
+        "id": "3238",
+        "latitude": "55.02",
+        "longitude": "-1.88",
+        "name": "Albemarle",
+        "region": "ne",
+        "unitaryAuthArea": "Northumberland"
+      },
+      {
+        "elevation": "32.0",
+        "id": "3257",
+        "latitude": "54.296",
+        "longitude": "-1.53",
+        "name": "Leeming",
+        "region": "yh",
+        "unitaryAuthArea": "North Yorkshire"
+      },
+      {
+        "elevation": "33.0",
+        "id": "3261",
+        "latitude": "54.134",
+        "longitude": "-1.414",
+        "name": "Dishforth Airfield",
+        "region": "yh",
+        "unitaryAuthArea": "North Yorkshire"
+      },
+      {
+        "elevation": "50.0",
+        "id": "14",
+        "latitude": "54.9375",
+        "longitude": "-2.8092",
+        "name": "Carlisle Airport",
+        "region": "nw",
+        "unitaryAuthArea": "Cumbria"
+      },
+      {
+        "elevation": "22.0",
+        "id": "26",
+        "latitude": "53.3336",
+        "longitude": "-2.85",
+        "name": "Liverpool John Lennon Airport",
+        "region": "nw",
+        "unitaryAuthArea": "Merseyside"
+      },
+      {
+        "elevation": "25.0",
+        "id": "33",
+        "latitude": "60.4322",
+        "longitude": "-1.2992",
+        "name": "Scatsta",
+        "region": "os",
+        "unitaryAuthArea": "Shetland Islands"
+      },
+      {
+        "elevation": "15.0",
+        "id": "3002",
+        "latitude": "60.749",
+        "longitude": "-0.854",
+        "name": "Baltasound",
+        "region": "os",
+        "unitaryAuthArea": "Shetland Islands"
+      },
+      {
+        "elevation": "82.0",
+        "id": "3005",
+        "latitude": "60.139",
+        "longitude": "-1.183",
+        "obsSource": "LNDSYN",
+        "name": "Lerwick (S. Screen)",
+        "region": "os",
+        "unitaryAuthArea": "Shetland Islands"
+      },
+      {
+        "elevation": "57.0",
+        "id": "3008",
+        "latitude": "59.527",
+        "longitude": "-1.628",
+        "name": "Fair Isle",
+        "region": "os",
+        "unitaryAuthArea": "Shetland Islands"
+      },
+      {
+        "elevation": "22.0",
+        "id": "3014",
+        "latitude": "60.111",
+        "longitude": "-2.063",
+        "obsSource": "LNDSYN",
+        "name": "Foula",
+        "region": "os",
+        "unitaryAuthArea": "Shetland Islands"
+      },
+      {
+        "elevation": "11.0",
+        "id": "3034",
+        "latitude": "57.859",
+        "longitude": "-5.636",
+        "name": "Aultbea",
+        "region": "he",
+        "unitaryAuthArea": "Highland"
+      },
+      {
+        "elevation": "18.0",
+        "id": "3037",
+        "latitude": "57.257",
+        "longitude": "-5.809",
+        "obsSource": "LNDSYN",
+        "name": "Skye/Lusa (Samos)",
+        "region": "he",
+        "unitaryAuthArea": "Highland"
+      },
+      {
+        "elevation": "81.0",
+        "id": "3044",
+        "latitude": "58.288",
+        "longitude": "-4.442",
+        "name": "Altnaharra Saws",
+        "region": "he",
+        "unitaryAuthArea": "Highland"
+      },
+      {
+        "elevation": "237.0",
+        "id": "3047",
+        "latitude": "56.867",
+        "longitude": "-4.708",
+        "name": "Tulloch Bridge",
+        "region": "he",
+        "unitaryAuthArea": "Highland"
+      }
+    ]
+  }
+}

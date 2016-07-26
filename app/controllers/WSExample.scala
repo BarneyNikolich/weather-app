@@ -13,11 +13,6 @@ class WSExample @Inject() (metOfficeService: MetOfficeService) extends Controlle
 
   def getAllLocations = Action.async {
     {
-//      metOfficeService.threeHourly(351985.toString).map {
-//        response =>
-//          println(s"-----------------------------------     ${response.json}")
-//      }
-
       metOfficeService.getLocations map {
         response =>
           response match {
