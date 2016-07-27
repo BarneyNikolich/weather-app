@@ -3,8 +3,9 @@ package services
 import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 
-import connectors.MetOfficeConnector
+import config.WeatherSerivceUrls
 import models.{FiveDayReportRoot, Root}
+import play.api.libs.ws.WSClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -12,16 +13,14 @@ import scala.concurrent.Future
 sealed trait MetOfficeResponse
 case class AllLocationsSuccessResponse(locations: Root) extends MetOfficeResponse
 case class FiveDayForecastSuccessResponse(locations: FiveDayReportRoot) extends MetOfficeResponse
-
-
 case class ExampleNotFound(code: Int) extends MetOfficeResponse
 case class ExampleTimeOut(error: TimeoutException) extends MetOfficeResponse
 
-class MetOfficeService @Inject() (metOfficeConnector: MetOfficeConnector) {
+class MetOfficeService @Inject() (val http: WSClient) {
 
   def getLocations: Future[MetOfficeResponse] = {
 
-    metOfficeConnector.getAllLocations map {
+    http.url(WeatherSerivceUrls.listOfLocationsUrl).get map {
       response =>
 
         response.status match {
@@ -40,7 +39,7 @@ class MetOfficeService @Inject() (metOfficeConnector: MetOfficeConnector) {
 
   def getFiveDayForecast(id: String): Future[MetOfficeResponse] = {
 
-    metOfficeConnector.getFiveDayForecast(id) map {
+    http.url(WeatherSerivceUrls.fiveDayForecast(id)).get map {
       fiveDayForecast =>
 
         fiveDayForecast.status match {
