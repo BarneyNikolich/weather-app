@@ -22,7 +22,7 @@ class HasMetOffice extends PlaySpec with MockitoSugar {
 //      val fakeMetOfficeService = Fixtures.buildFakeMetOfficeService
 //      val mockMetOfficeConnector = mock[MetOfficeService]
 //
-//      val httpGetResponse = AllLocationsSuccessResponse(Json.parse(Fixtures.exampleListOfLocationsResponse).as[Root])
+//
 //
 //      when(mockMetOfficeConnector.getLocations) thenReturn Future.successful(httpGetResponse)
 //
@@ -35,20 +35,15 @@ class HasMetOffice extends PlaySpec with MockitoSugar {
 
     "Return a ExampleNotFound containing a status code of 404 when data is not found" in {
 
-      val request = mock[WSRequest]
-      val response = mock[WSResponse]
-
-
-
+      val httpGetResponse = Fixtures.exampleListOfLocationsResponse
 
       val http: WSClient = MockitoSugar.mock[WSClient]
 
       val fakeRequest = new MetOfficeService(http)
 
-      val mockMetOfficeConnector = mock[MetOfficeService]
+      val mockMetOfficeConnector = new MetOfficeService(http)
 
-      when(fakeRequest.getLocations) thenReturn Future.successful(ExampleNotFound(404))
-
+//      when(http.url("any").get()) thenReturn Future.successful(200)
       val result = fakeRequest.getLocations
 
       result mustBe ExampleNotFound(404)

@@ -19,7 +19,7 @@ object Town {
   implicit val formats = Json.format[Town]
 }
 
-case class Location(Location: Seq[Town]) {
+case class LocationAll(Location: Seq[Town]) {
 
   def townExists(queryName: String): Boolean = {
     Location.exists(town => town.name == queryName)
@@ -30,11 +30,11 @@ case class Location(Location: Seq[Town]) {
 //  }
 }
 
-object Location {
-  implicit val formats = Json.format[LocationFiveDay]
+object LocationAll {
+  implicit val formats = Json.format[LocationAll]
 }
 
-case class Root(Locations: LocationFiveDay)
+case class Root(Locations: LocationAll)
 
 object Root {
   implicit val formats = Json.format[Root]
