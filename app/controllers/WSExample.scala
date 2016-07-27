@@ -47,7 +47,11 @@ class WSExample @Inject() (metOfficeService: MetOfficeService) extends Controlle
       metOfficeService.getFiveDayForecast(354059.toString) map {
         fiveDayForecast =>
           fiveDayForecast match {
-            case FiveDayForecastSuccessResponse(forecast) => Ok("Works")
+            case FiveDayForecastSuccessResponse(forecast) =>
+              val a = forecast.SiteRep.DV.Location.Period.map(_.Rep.map(_.PPd))
+
+
+              Ok("Weather PPD for Wallasey " + a)
           }
       }
 

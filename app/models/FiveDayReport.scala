@@ -48,10 +48,6 @@ object WeatherData {
 }
 
 
-
-
-
-
 case class Period(`type`: String, value: String, Rep: Rep)
 
 case object Period {
@@ -70,9 +66,6 @@ case class LocationFiveDay(
    Period: Seq[DvPeriod]
 )
 
-
-
-
 case class Param(name: String, units: String, $: String)
 object Param {
   implicit val formats = Json.format[Param]
@@ -85,8 +78,6 @@ object ParamData {
   implicit val formats = Json.format[ParamData]
 
 }
-
-
 
 case class DvData(dataDate: String, `type`: String, Location: LocationFiveDay)
 
