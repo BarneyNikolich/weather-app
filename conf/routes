@@ -1,9 +1,9 @@
 
 
 
-GET     /                           controllers.WSExample.index
-GET     /locations                  controllers.WSExample.getAllLocations
-GET     /fiveDayForecast            controllers.WSExample.getFiveDayForecast
+GET     /                           controllers.WSExampleController.index
+GET     /locations                  controllers.WSExampleController.getAllLocations
+GET     /fiveDayForecast            controllers.WSExampleController.getFiveDayForecast
 
 
 

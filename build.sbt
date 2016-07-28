@@ -12,7 +12,9 @@ libraryDependencies ++= Seq(
   ws,
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test,
   "org.mockito" % "mockito-core" % "1.9.5" % "test",
-  "org.jsoup" % "jsoup" % "1.8.3" % "test"
+  "org.jsoup" % "jsoup" % "1.8.3" % "test",
+  "de.leanovate.play-mockws" %% "play-mockws" % "2.5.0" % "test"
+
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

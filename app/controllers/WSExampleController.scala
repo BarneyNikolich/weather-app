@@ -5,13 +5,13 @@ import play.api.mvc.{Action, Controller}
 import services._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class WSExample @Inject() (metOfficeService: MetOfficeService) extends Controller {
+class WSExampleController @Inject()(metOfficeService: MetOfficeService) extends Controller {
 
   def index = Action {
     Ok(views.html.index())
   }
 
-  def getAllLocations = Action.async {
+  def getAllLocations() = Action.async {
     {
       metOfficeService.getLocations map {
         response =>
@@ -19,15 +19,9 @@ class WSExample @Inject() (metOfficeService: MetOfficeService) extends Controlle
             case AllLocationsSuccessResponse(locationsList) =>
 
 //              val town = locationsList.Locations.Location.map(x => x.name)
-                val ridingMillExisits = locationsList.Locations.townExists("Hexham")
+              val ridingMillExisits = locationsList.Locations.townExists("Hexham")
               val haxham = locationsList.Locations.Location.find(x => x.name == "Hexham")
-                val id = haxham.map(_.id)
-
-
-
-//              val h = locationsList.Locations.townExists("Hyde")
-//              val location = locationsList.Locations.Location.filter(x => x.name == "Hyde")
-//              val id = location.toString()
+              val id = haxham.map(_.id)
 
 
 //              if (h) {

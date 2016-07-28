@@ -25,9 +25,16 @@ case class LocationAll(Location: Seq[Town]) {
     Location.exists(town => town.name == queryName)
   }
 
-//  def getTown(queryTown: String) {
-//    Location.
-//  }
+  def getTown(queryTown: String): Option[Town] = {
+    Location.find( town => town.name == queryTown)
+  }
+
+  override def toString: String =  {
+    println(Location)
+    Location.toString()
+  }
+
+
 }
 
 object LocationAll {

@@ -8,8 +8,9 @@ import scala.io.Source
 
 trait MetOfficeFixtures {
 
-  def exampleListOfLocationsResponse = Source.fromInputStream(getClass.getResourceAsStream("/MetOfficeResponse/listOfLocation.json"), "UTF-8").mkString
-  def exampleFiveDayForecastResponse = Source.fromInputStream(getClass.getResourceAsStream("/MetOfficeResponse/fiveDayForecast.json"), "UTF-8").mkString
+  //def exampleListOfLocationsResponse = Source.fromInputStream(getClass.getResourceAsStream("test/resources/MetOfficeResponses/listOfLocation.json"), "UTF-8").mkString
+  def exampleListOfLocationsResponse = scala.io.Source.fromFile("test/resources/MetOfficeResponses/listOfLocation.json").mkString
+  //def exampleFiveDayForecastResponse = Source.fromInputStream(getClass.getResourceAsStream("test/resources/MetOfficeResponses/fiveDayForecast.json"), "UTF-8").mkString
 
 }
 
