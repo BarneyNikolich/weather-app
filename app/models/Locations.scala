@@ -7,19 +7,19 @@ import play.api.libs.json._
 */
 
 case class Town(
-                 elevation: Option[String],
-                 id: String,
-                 latitude: String,
-                 longitude: String,
-                 name: String,
-                 region: Option[String],
-                 unitaryAuthArea: Option[String])
+  elevation: Option[String],
+  id: String,
+  latitude: String,
+  longitude: String,
+  name: String,
+  region: Option[String],
+  unitaryAuthArea: Option[String])
 
 object Town {
   implicit val formats = Json.format[Town]
 }
 
-case class Location(Location: Seq[Town]) {
+case class LocationAll(Location: Seq[Town]) {
 
   def townExists(queryName: String): Boolean = {
     Location.exists(town => town.name == queryName)
@@ -30,11 +30,11 @@ case class Location(Location: Seq[Town]) {
 //  }
 }
 
-object Location {
-  implicit val formats = Json.format[Location]
+object LocationAll {
+  implicit val formats = Json.format[LocationAll]
 }
 
-case class Root(Locations: Location)
+case class Root(Locations: LocationAll)
 
 object Root {
   implicit val formats = Json.format[Root]
