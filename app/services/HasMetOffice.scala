@@ -6,10 +6,12 @@ import javax.inject.Inject
 import config.WeatherSerivceUrls
 import models.{FiveDayReportRoot, Root}
 import play.api.libs.json.JsObject
-import play.api.libs.ws.WSClient
+import play.api.libs.ws.{WSClient, WSRequest}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.concurrent.duration._
+
 
 sealed trait MetOfficeResponse
 case class AllLocationsSuccessResponse(locations: Root) extends MetOfficeResponse
@@ -21,7 +23,11 @@ class MetOfficeService @Inject() (http: WSClient) {
 
   def getLocations: Future[MetOfficeResponse] = {
 
-    http.url(WeatherSerivceUrls.listOfLocationsUrl).get map {
+//    val request: WSRequest = http.url("www.google.co.uk").withHeaders("Accept" -> "application/json").withRequestTimeout(1000.millis)
+
+    val r = http.url(WeatherSerivceUrls.listOfLocationsUrl)
+
+    r.get map {
       response =>
 
         response.status match {

@@ -1,3 +1,6 @@
+@(weatherForm: Form[models.WeatherRequest])(implicit messages: Messages)
+
+
 
 <h1>Test get Request</h1>
 
@@ -6,3 +9,17 @@
 <button> <a href="@routes.WSExampleController.getAllLocations()"> Get Locations</a></button>
 
 <button> <a href="@routes.WSExampleController.getFiveDayForecast()"> Get 5 day forecast </a></button>
+
+
+<h2> Enter the town you would like weather data for.</h2>
+
+ @helper.form(action = routes.WSExampleController.submitWeatherRequest) {
+
+    @helper.inputText(
+    weatherForm("town"),
+    '_label -> "Town"
+    )
+
+    <button type="submit">Submit</button>
+
+}

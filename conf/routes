@@ -2,9 +2,12 @@
 
 
 GET     /                           controllers.WSExampleController.index
+POST    /                           controllers.WSExampleController.submitWeatherRequest
+
 GET     /locations                  controllers.WSExampleController.getAllLocations
 GET     /fiveDayForecast            controllers.WSExampleController.getFiveDayForecast
 
+GET     /weatherDataRequest         controllers.WSExampleController.getWeatherData(town: String)
 
 
 

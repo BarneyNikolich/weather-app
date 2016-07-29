@@ -1,15 +1,59 @@
 package controllers
 
 import javax.inject.Inject
+
+import models.WeatherRequest
+import play.api.i18n.{I18nComponents, I18nSupport, MessagesApi}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import services._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class WSExampleController @Inject()(metOfficeService: MetOfficeService) extends Controller {
+class WSExampleController @Inject()(metOfficeService: MetOfficeService, val messagesApi: MessagesApi) extends Controller with I18nSupport{
 
   def index = Action {
-    Ok(views.html.index())
+    Ok(views.html.index(WeatherRequest.weatherForm))
   }
+
+  def submitWeatherRequest = Action { implicit request =>
+    WeatherRequest.weatherForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.index(formWithErrors))
+      },
+      successForm => {
+        Redirect(routes.WSExampleController.getWeatherData(successForm.town))
+      }
+    )
+  }
+
+  def getWeatherData(town: String) = Action.async{
+    {
+      metOfficeService.getLocations map {
+        response =>
+          response match {
+            case AllLocationsSuccessResponse(locationsList) =>
+              val doesTownExist = locationsList.Locations.townExists(town)
+
+              Ok
+          }
+      }
+
+    }
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
 
   def getAllLocations() = Action.async {
     {
@@ -25,7 +69,7 @@ class WSExampleController @Inject()(metOfficeService: MetOfficeService) extends 
 
 
 //              if (h) {
-                Ok("Does Hexham Mill exist? = " + ridingMillExisits + " Hexhams Json object is:  " + id)
+                Ok(Json.toJson(locationsList))
 //              } else BadRequest
 
             case ExampleTimeOut(t) => InternalServerError
