@@ -3,12 +3,13 @@ package controllers
 import javax.inject.Inject
 
 import models.WeatherRequest
-import play.api.i18n.{I18nComponents, I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import services._
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class WSExampleController @Inject()(metOfficeService: MetOfficeService, val messagesApi: MessagesApi) extends Controller with I18nSupport{
 
@@ -28,34 +29,30 @@ class WSExampleController @Inject()(metOfficeService: MetOfficeService, val mess
   }
 
   def getWeatherData(town: String) = Action.async{
-    {
-      metOfficeService.getLocations map {
-        response =>
-          response match {
-            case AllLocationsSuccessResponse(locationsList) =>
-              val doesTownExist = locationsList.Locations.townExists(town)
 
-              Ok
+   metOfficeService.getLocations flatMap  { response =>
+      response match {
+      case AllLocationsSuccessResponse(locationsList) =>
+
+        if(locationsList.Locations.townExists(town)) {
+          val townId = locationsList.Locations.getTown(town).map(_.id).get
+
+          metOfficeService.getFiveDayForecast(townId) map { report =>
+            report match {
+              case FiveDayForecastSuccessResponse(response) =>
+                val responsePrint = Json.prettyPrint(Json.toJson(response))
+                Ok(responsePrint)
+              case _ => BadRequest("Report Not Found")
+            }
           }
+        } else Future.successful(BadRequest("Town doesnt exist!"))
+      case _ => Future.successful(BadRequest("Locations call failed" ))
       }
-
     }
-
-
   }
 
 
-
-
-
-
-
-
-
-
-
-
-  def getAllLocations() = Action.async {
+def getAllLocations() = Action.async {
     {
       metOfficeService.getLocations map {
         response =>
@@ -80,16 +77,15 @@ class WSExampleController @Inject()(metOfficeService: MetOfficeService, val mess
   }
 
 
-  def getFiveDayForecast = Action.async {
+  def getFiveDayForecast(id: String) = Action.async {
     {
-      metOfficeService.getFiveDayForecast(354059.toString) map {
+      metOfficeService.getFiveDayForecast(id) map {
         fiveDayForecast =>
           fiveDayForecast match {
             case FiveDayForecastSuccessResponse(forecast) =>
-              val a = forecast.SiteRep.DV.Location.Period.map(_.Rep.map(_.PPd))
 
 
-              Ok("Weather PPD for Wallasey " + a)
+              Ok(forecast.toString)
           }
       }
 

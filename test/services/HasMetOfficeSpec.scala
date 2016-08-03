@@ -2,6 +2,8 @@ package services
 
 import mockws.MockWS
 import models.Root
+import play.api.libs.ws.ahc.AhcWSResponse
+import play.mvc.Http.Response
 import util._
 import org.scalatestplus.play.PlaySpec
 import org.scalatest.mock.MockitoSugar
@@ -25,41 +27,43 @@ class HasMetOfficeSpec extends PlaySpec with MockitoSugar {
 
   "Calling HasMetOffice.getLocations" should {
 
-    "Return a AllLocationsSuccessResponse containing a Root model of all locations" in {
-
-      val responseBody = Json.parse(Fixtures.exampleListOfLocationsResponse)
-
-      val fakeService = MockWS {
-        case ("GET", "/locations") => Action { Ok(responseBody) }
-      }
-      val result = fakeService.url("/locations").get()
-
-      //val http = fakeService
-
-      when(fakeService.url("/locations").get()) thenReturn {
-        result
-      }
-
-      val service = new MetOfficeService(fakeService)
-
-      val locations = Await.result(service.getLocations, 10 seconds)
-
-      locations mustBe AllLocationsSuccessResponse(any())
-    }
+//    "Return a AllLocationsSuccessResponse containing a Root model of all locations" in {
+//
+//      val responseBody = Json.parse(Fixtures.exampleListOfLocationsResponse)
+//
+//      val fakeService = MockWS {
+//        case ("GET", "/locations") => Action { Ok(responseBody) }
+//      }
+//      val result = fakeService.url("/locations").get()
+//
+//      //val http = fakeService
+//
+//      when(fakeService.url("/locations").get()) thenReturn {
+//        result
+//      }
+//
+//      val service = new MetOfficeService(fakeService)
+//
+//      val locations = Await.result(service.getLocations, 10 seconds)
+//
+//      locations mustBe AllLocationsSuccessResponse(any())
+//    }
   }
 
     "Return a ExampleNotFound containing a status code of 404 when data is not found" in {
 
-      val http: WSClient = mock[WSClient]
+//    Mock the WsClient
+      val ws: WSClient = mock[WSClient]
 
-
-
+//    Mock the .url call => WsRequest
       val r : WSRequest = MockitoSugar.mock[WSRequest]
-      when(http.url(any())) thenReturn r
 
-      val wsResponse = WsResponse()
+      when(ws.url(any())) thenReturn r
 
-      when(r.get()) thenReturn eventualResponse
+
+      val wsResponse = new Response
+
+      when(r.get()) thenReturn wsResponse
 
 
       val expectedResponse: Future[WSResponse] = Future.successful(mockResponse)
@@ -69,7 +73,7 @@ class HasMetOfficeSpec extends PlaySpec with MockitoSugar {
 
       when()
 
-      val fakeRequest = new MetOfficeService(http)
+      val fakeRequest = new MetOfficeService(ws)
       val result = fakeRequest.getLocations
 
       result mustBe ExampleNotFound(404)

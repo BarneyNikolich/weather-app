@@ -93,13 +93,18 @@ case object Types {
 }
 
 
-
-case class FiveDayReportRoot(SiteRep: Types)
-
 object FiveDayReportRoot {
   implicit val formats = Json.format[FiveDayReportRoot]
+}
+
+case class FiveDayReportRoot(SiteRep: Types) {
+
+//  def fromFiveDayReportToJsValue = Json.toJson(FiveDayReportRoot)
+
+//  def prettyPrint = Json.prettyPrint(fromFiveDayReportToJsValue)
 
 }
+
 
 
 
