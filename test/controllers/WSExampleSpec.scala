@@ -1,83 +1,104 @@
 package controllers
 
-import models.Root
-import services.{AllLocationsSuccessResponse, MetOfficeService}
-import org.scalatestplus.play._
-import org.scalatest.mock.MockitoSugar
+import models.{FiveDayReportRoot, Root}
 import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.play._
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
-import play.api.libs.ws.WSClient
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test._
-import play.test.Helpers._
-import util.Fixtures
+import services.{AllLocationsSuccessResponse, FiveDayForecastSuccessResponse, MetOfficeService, NotFoundResponse}
+import util._
+import play.api.http.Status._
+import scala.concurrent.Future
 
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
-/**
-  * Created by barn on 28/07/16.
-  */
 class WSExampleSpec extends PlaySpec with MockitoSugar {
 
-  "Calling WSExampleController.getAllLocations" should {
+  trait LocalSetup extends UnitTestHelpers {
+    val mockMetService = mock[MetOfficeService]
+    val mockMessages = mock[MessagesApi]
 
-    "return 200 when making a successful call" in {
+    val allLocationsSuccessResponse = AllLocationsSuccessResponse(Json.parse(Fixtures.exampleListOfLocationsResponse).as[Root])
 
-      val mockMetService = mock[MetOfficeService]
-      val messagesMock = mock[MessagesApi]
+    val controller = new WSExampleController(mockMetService, mockMessages)
+  }
+
+
+  "Calling WSExampleController.getWeatherData" should {
+
+    "return 200 when AllLocationsSuccessResponse is returned from MetOfficeService" in new LocalSetup {
 
       when(mockMetService.getLocations) thenReturn {
         Future.successful(AllLocationsSuccessResponse(Json.parse(Fixtures.exampleListOfLocationsResponse).as[Root]))
       }
 
-      val controller = new WSExampleController(mockMetService, messagesMock)//.getAllLocations().apply(FakeRequest())
+      when(mockMetService.getFiveDayForecast("3044")) thenReturn {
+        Future.successful(FiveDayForecastSuccessResponse(Json.parse(Fixtures.exampleFiveDayForecastResponse).as[FiveDayReportRoot]))
+      }
 
-      val result: Future[Result] = controller.getAllLocations().apply(FakeRequest())
+      val r = controller.getWeatherData("Test Town")(FakeRequest("GET", "/", FakeHeaders(), AnyContentAsEmpty))
+      Status(r) mustBe OK
+    }
 
-      val req = Await.result(result, 10 seconds)
+    "return a 400 when MetOffice returns a ExampleNotFoundResponse for getAllLocations call" in new LocalSetup {
 
-      req.header.status mustBe(200)
-//      val g: String = contentAsString(req)
-      //a.body. mustBe(Json.parse(Fixtures.exampleListOfLocationsResponse).as[Root])
+      when(mockMetService.getLocations) thenReturn Future.successful(NotFoundResponse(404))
 
-//      val resu
+      val r = controller.getAllLocations().apply(FakeRequest())
+      Status(r) mustBe BAD_REQUEST
+    }
 
-//      def status(res : Result): Int = {
-//        res.header.status
-//      }
-//
-//      def status(res: Future[Result])(implicit timeout: Duration): Int = status(Await.result(res, timeout))
+    "return 400 when MetOffice returns AllLocationsSuccessResponse for getAllLocationsCall but NotFoundResponse for getFiveDayForecast" in new LocalSetup {
 
+      when(mockMetService.getLocations) thenReturn Future.successful(allLocationsSuccessResponse)
+      when(mockMetService.getFiveDayForecast("3044")) thenReturn Future.successful(NotFoundResponse(404))
 
-//
-//      val http = mock[WSClient]
-//      val metOfficeService = new MetOfficeService(http)
-//
-//      val exampleJsonResponse = Json.parse(Fixtures.exampleListOfLocationsResponse).as[Root]
-//      when(metOfficeService.getLocations) thenReturn Future.successful(AllLocationsSuccessResponse(exampleJsonResponse))
-//
-//      val r = metOfficeService.getLocations
-////      val r = metOfficeService.getLocations.(FakeRequest("GET", "/locations"))
-//
-////      r mustBe Future.successful(AllLocationsSuccessResponse(exampleJsonResponse))
-//
-//      val fakeRequest = FakeRequest(Helpers.GET, controllers.routes.WSExampleController.getAllLocations().url)
-////
-//      val result = controllers.routes.WSExampleController.getAllLocations()(fakeRequest).result.value.get
-//
-//
+      val r = controller.getWeatherData("Test Town").apply(FakeRequest())
+      Status(r) mustBe BAD_REQUEST
+    }
 
+    "return a 400 when MetOffice returns AllLocationsSuccessResponse but town doesn't exist in list of Locations" in new LocalSetup {
+      when(mockMetService.getLocations) thenReturn Future.successful(allLocationsSuccessResponse)
 
-
-
-
-
+      val r = controller.getWeatherData("Timbooktwo").apply(FakeRequest())
+      Status(r) mustBe BAD_REQUEST
 
     }
+  }
+
+
+  "Calling WSExampleController.getAllLocations" should {
+
+    "return 200 when a AllLocationsSuccessResponse is returned from MetOfficeService" in new LocalSetup{
+
+      when(mockMetService.getLocations) thenReturn {
+        Future.successful(AllLocationsSuccessResponse(Json.parse(Fixtures.exampleListOfLocationsResponse).as[Root]))
+      }
+
+      val result: Future[Result] = controller.getAllLocations()(FakeRequest("GET", "/", FakeHeaders(), AnyContentAsEmpty))
+
+      Status(result) mustBe(200)
+    }
+
+  "return 400 when a ExampleNotFoundResponse is returned from MetOfficeService" in new LocalSetup {
+
+    when(mockMetService.getLocations) thenReturn Future.successful(NotFoundResponse(404))
+
+    val r = controller.getAllLocations()(FakeRequest("GET", "/", FakeHeaders(), AnyContentAsEmpty))
+
+    Status(r) mustBe 400
+
+  }
+
+
+
+
 
 
   }
+
+
 
 
 

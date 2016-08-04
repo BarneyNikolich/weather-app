@@ -28,9 +28,8 @@ class WSExampleController @Inject()(metOfficeService: MetOfficeService, val mess
     )
   }
 
-  def getWeatherData(town: String) = Action.async{
-
-   metOfficeService.getLocations flatMap  { response =>
+  def getWeatherData(town: String) = Action.async{ implicit request =>
+   metOfficeService.getLocations flatMap { response =>
       response match {
       case AllLocationsSuccessResponse(locationsList) =>
 
@@ -42,10 +41,10 @@ class WSExampleController @Inject()(metOfficeService: MetOfficeService, val mess
               case FiveDayForecastSuccessResponse(response) =>
                 val responsePrint = Json.prettyPrint(Json.toJson(response))
                 Ok(responsePrint)
-              case _ => BadRequest("Report Not Found")
+              case _ => BadRequest(request.headers.toString())
             }
           }
-        } else Future.successful(BadRequest("Town doesnt exist!"))
+        } else Future.successful(BadRequest("Town doesn't exist!"))
       case _ => Future.successful(BadRequest("Locations call failed" ))
       }
     }
@@ -58,19 +57,9 @@ def getAllLocations() = Action.async {
         response =>
           response match {
             case AllLocationsSuccessResponse(locationsList) =>
-
-//              val town = locationsList.Locations.Location.map(x => x.name)
-              val ridingMillExisits = locationsList.Locations.townExists("Hexham")
-              val haxham = locationsList.Locations.Location.find(x => x.name == "Hexham")
-              val id = haxham.map(_.id)
-
-
-//              if (h) {
                 Ok(Json.toJson(locationsList))
-//              } else BadRequest
-
             case ExampleTimeOut(t) => InternalServerError
-            case _ => Ok("TIMEOUT")
+            case _ => BadRequest("TIMEOUT")
           }
       }
     }
@@ -83,14 +72,11 @@ def getAllLocations() = Action.async {
         fiveDayForecast =>
           fiveDayForecast match {
             case FiveDayForecastSuccessResponse(forecast) =>
-
-
               Ok(forecast.toString)
+            case _ => BadRequest
           }
       }
-
     }
-
   }
 
 
